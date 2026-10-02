@@ -6,70 +6,25 @@ const attendeeCount = document.getElementById("attendeeCount");
 const progressBar = document.getElementById("progressBar");
 const greeting = document.getElementById("greeting");
 
-// Track attendance and prevent duplicate check-ins.
 let count = 0;
-const maxCount = 50;
-const checkedInNames = [];
+const maxGoal = 50;
 
-// Handle form submission.
 form.addEventListener("submit", function (event) {
   event.preventDefault();
 
   const name = nameInput.value.trim();
   const team = teamSelect.value;
-  const normalizedName = name.toLowerCase();
-
-  if (name === "") {
-    greeting.textContent = "Please enter an attendee name.";
-    greeting.className = "error-message";
-    greeting.style.display = "block";
-    return;
-  }
-
-  if (team === "") {
-    greeting.textContent = "Please select a team before checking in.";
-    greeting.className = "error-message";
-    greeting.style.display = "block";
-    return;
-  }
-
-  if (checkedInNames.indexOf(normalizedName) !== -1) {
-    greeting.textContent = `${name} has already checked in.`;
-    greeting.className = "error-message";
-    greeting.style.display = "block";
-    return;
-  }
-
-  if (count >= maxCount) {
-    greeting.textContent = "The event has reached its attendance limit.";
-    greeting.className = "error-message";
-    greeting.style.display = "block";
-    return;
-  }
-
-  const teamName = teamSelect.options[teamSelect.selectedIndex].text;
+  const teamLabel = teamSelect.options[teamSelect.selectedIndex].text;
   const teamCounter = document.getElementById(team + "Count");
 
-  if (!teamCounter) {
-    greeting.textContent = "That team is not available.";
-    greeting.className = "error-message";
-    greeting.style.display = "block";
-    return;
-  }
+  count = count + 1;
 
-  count++;
+  const percentage = Math.round((count / maxGoal) * 100);
+
   attendeeCount.textContent = count;
-
-  const percentage = Math.round((count / maxCount) * 100);
   progressBar.style.width = `${percentage}%`;
-  progressBar.setAttribute("aria-valuenow", percentage);
-
-  teamCounter.textContent = parseInt(teamCounter.textContent, 10) + 1;
-
-  checkedInNames.push(normalizedName);
-  greeting.textContent = `Welcome, ${name} from ${teamName}!`;
-  greeting.className = "success-message";
-  greeting.style.display = "block";
+  teamCounter.textContent = Number(teamCounter.textContent) + 1;
+  greeting.textContent = `Welcome, ${name} from ${teamLabel}!`;
 
   form.reset();
 });
