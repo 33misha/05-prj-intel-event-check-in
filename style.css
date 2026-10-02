@@ -258,6 +258,11 @@ button .fas {
   color: #003c71;
 }
 
+.error-message {
+  background-color: #fff1f0;
+  color: #b42318;
+}
+
 /* Counter */
 #attendeeCount {
   color: #0071c5;
