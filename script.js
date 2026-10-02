@@ -26,6 +26,13 @@ form.addEventListener("submit", function (event) {
     return;
   }
 
+  if (team === "") {
+    greeting.textContent = "Please select a team before checking in.";
+    greeting.className = "error-message";
+    greeting.style.display = "block";
+    return;
+  }
+
   if (checkedInNames.indexOf(normalizedName) !== -1) {
     greeting.textContent = `${name} has already checked in.`;
     greeting.className = "error-message";
@@ -41,6 +48,15 @@ form.addEventListener("submit", function (event) {
   }
 
   const teamName = teamSelect.options[teamSelect.selectedIndex].text;
+  const teamCounter = document.getElementById(team + "Count");
+
+  if (!teamCounter) {
+    greeting.textContent = "That team is not available.";
+    greeting.className = "error-message";
+    greeting.style.display = "block";
+    return;
+  }
+
   count++;
   attendeeCount.textContent = count;
 
@@ -48,7 +64,6 @@ form.addEventListener("submit", function (event) {
   progressBar.style.width = `${percentage}%`;
   progressBar.setAttribute("aria-valuenow", percentage);
 
-  const teamCounter = document.getElementById(team + "Count");
   teamCounter.textContent = parseInt(teamCounter.textContent, 10) + 1;
 
   checkedInNames.push(normalizedName);
